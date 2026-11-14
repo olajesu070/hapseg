@@ -4,6 +4,8 @@ import { prisma } from "@/lib/prisma";
 import { parseProductCaptionWithGemini } from "@/lib/gemini";
 import { uploadTelegramPhotoToStorage } from "@/lib/storage";
 
+export const dynamic = "force-dynamic";
+
 interface TelegramPhotoSize {
   file_id: string;
   file_unique_id: string;
