@@ -1,0 +1,25 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
+}
+
+model Product {
+  id              String   @id @default(uuid())
+  telegramGroupId String?  @unique // Handles Telegram album race conditions / deduplication
+  name            String
+  description     String   @db.Text
+  price           Float?
+  itemNo          String?
+  phoneNumber     String
+  category        String   // 'fashion', 'kitchen', or 'varieties'
+  images          String[] // Array of hosted image URLs
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([category])
+}

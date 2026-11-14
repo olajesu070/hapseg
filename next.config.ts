@@ -1,16 +1,22 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
-  cacheComponents: true,
-  partialPrefetching: true,
-  turbopack: {
-    rules: {
-      "*.css": {
-        loaders: ["@tailwindcss/turbopack"],
-        as: "*.css",
+  images: {
+    // Whitelist only explicit origins to prevent SSRF through the Next.js image proxy
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "api.telegram.org",
       },
-    },
+      {
+        protocol: "https",
+        hostname: "images.unsplash.com",
+      },
+      {
+        protocol: "https",
+        hostname: "placehold.co",
+      },
+    ],
   },
 };
 
