@@ -130,8 +130,8 @@ export default async function CategoryPage({ params, searchParams }: CategoryPag
         </div>
       ) : (
         <div>
-          {/* 1 Column on Mobile, 2 on Tablet, 3 on Desktop, 4 on XL */}
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {/* 2 Columns on Mobile, 3 on Tablet/Desktop, 4 on Wide Screens */}
+          <div className="grid grid-cols-2 gap-2.5 sm:gap-4 md:grid-cols-3 lg:grid-cols-4">
             {products.map((product) => (
               <ProductCard key={product.id} product={product} searchQuery={searchQuery} />
             ))}
