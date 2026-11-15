@@ -1,9 +1,10 @@
 import type { Metadata, Viewport } from "next";
 import { Plus_Jakarta_Sans } from "next/font/google";
 import Link from "next/link";
+import Image from "next/image";
 import { MobileNavigation } from "@/components/MobileNavigation";
 import { CategoryPills } from "@/components/CategoryPills";
-import { ShoppingBag, MessageCircle, ShieldCheck } from "lucide-react";
+import { MessageCircle, ShieldCheck } from "lucide-react";
 import "./globals.css";
 
 const fontSans = Plus_Jakarta_Sans({
@@ -13,8 +14,11 @@ const fontSans = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "HAPSEG — Premium Lifestyle & Retail",
+  title: "Hapseg Varieties Store",
   description: "Browse the latest fashion, kitchenware, and lifestyle varieties. Direct ordering and fast nationwide delivery.",
+  icons: {
+    icon: "/logo.png",
+  },
 };
 
 export const viewport: Viewport = {
@@ -38,18 +42,16 @@ export default function RootLayout({
         <header className="sticky top-0 z-30 border-b border-slate-200/80 bg-white/95 backdrop-blur-md">
           <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
             
-            {/* Brand Logo */}
-            <Link href="/fashion" className="group flex items-center gap-2.5">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-950 text-white shadow-sm transition-transform group-hover:scale-105 active:scale-95">
-                <ShoppingBag className="h-5 w-5" />
-              </div>
-              <div className="flex flex-col">
-                <span className="text-base font-black tracking-tight text-slate-950">
-                  HAPSEG<span className="text-emerald-600">.</span>
-                </span>
-                <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400">
-                  Official Store
-                </span>
+            {/* Brand Official Logo */}
+            <Link href="/fashion" className="group flex items-center gap-2">
+              <div className="relative h-10 w-32 sm:h-11 sm:w-36 transition-transform group-hover:scale-105 active:scale-95">
+                <Image
+                  src="/logo.png"
+                  alt="Hapseg Varieties Store"
+                  fill
+                  priority
+                  className="object-contain object-left"
+                />
               </div>
             </Link>
 
@@ -98,7 +100,17 @@ export default function RootLayout({
         {/* Footer */}
         <footer className="hidden md:block border-t border-slate-200/70 bg-white py-8 mt-12 text-center text-xs text-slate-500">
           <div className="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
-            <p>© {new Date().getFullYear()} HAPSEG. All rights reserved.</p>
+            <div className="flex items-center gap-2">
+              <div className="relative h-7 w-24">
+                <Image
+                  src="/logo.png"
+                  alt="Hapseg Varieties Store"
+                  fill
+                  className="object-contain"
+                />
+              </div>
+              <p>© {new Date().getFullYear()} Hapseg Varieties Store. All rights reserved.</p>
+            </div>
             <div className="flex items-center gap-5 text-slate-600 font-medium">
               <span className="flex items-center gap-1.5"><ShieldCheck className="h-4 w-4 text-emerald-600" /> Guaranteed Quality</span>
               <span className="flex items-center gap-1.5"><MessageCircle className="h-4 w-4 text-emerald-600" /> Direct WhatsApp Inquiries</span>
