@@ -64,8 +64,8 @@ export function Pagination({ currentPage, totalPages, category, searchQuery, lim
                 prefetch={true}
                 className={`inline-flex h-9 w-9 items-center justify-center rounded-full text-xs font-bold transition-all ${
                   isCurrent
-                    ? "bg-slate-900 text-white shadow"
-                    : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+                    ? "bg-[#6c40d9] text-white shadow shadow-purple-500/25"
+                    : "text-slate-600 hover:bg-violet-50 hover:text-[#6c40d9]"
                 }`}
               >
                 {p}

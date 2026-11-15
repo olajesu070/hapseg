@@ -11,30 +11,31 @@ export default function ContactUsPage() {
   return (
     <div className="space-y-8 max-w-4xl mx-auto">
       {/* Header Banner */}
-      <div className="relative overflow-hidden rounded-3xl bg-slate-950 p-6 sm:p-10 text-white shadow-xl">
+      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#35186b] via-[#4d239c] to-[#6c40d9] p-6 sm:p-10 text-white shadow-xl shadow-purple-950/10">
         <div className="relative z-10 max-w-xl">
-          <span className="inline-block rounded-full bg-slate-800 text-slate-300 px-3 py-1 text-xs font-semibold uppercase tracking-wider mb-3">
+          <span className="inline-block rounded-full bg-white/10 backdrop-blur-md text-[#fda173] border border-white/15 px-3 py-1 text-xs font-bold uppercase tracking-wider mb-3">
             Get In Touch
           </span>
           <h1 className="text-2xl sm:text-4xl font-black tracking-tight text-white">
             We’re Just a Message Away!
           </h1>
-          <p className="mt-2 text-xs sm:text-sm text-slate-400 leading-relaxed">
+          <p className="mt-2 text-xs sm:text-sm text-purple-100/90 leading-relaxed">
             Have a question about an order, wholesale inquiry, or specific product availability? Reach out directly via our physical stores or instant WhatsApp.
           </p>
         </div>
+        <div className="absolute -right-8 -bottom-10 h-56 w-56 rounded-full bg-white/5 blur-2xl pointer-events-none" />
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
         {/* Physical Store Locations */}
         <div className="space-y-4">
           <h2 className="text-lg font-black text-slate-950 flex items-center gap-2">
-            <MapPin className="h-5 w-5 text-emerald-600" />
+            <MapPin className="h-5 w-5 text-[#6c40d9]" />
             <span>Our Physical Branches</span>
           </h2>
 
-          <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm space-y-2">
-            <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-full">
+          <div className="rounded-2xl border border-violet-100 bg-white p-5 shadow-sm space-y-2">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-[#6c40d9] bg-violet-50 px-2.5 py-0.5 rounded-full">
               Location 1 (Main Branch)
             </span>
             <h3 className="font-bold text-slate-900 text-sm">Okesha Market Branch</h3>
@@ -43,8 +44,8 @@ export default function ContactUsPage() {
             </p>
           </div>
 
-          <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm space-y-2">
-            <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-full">
+          <div className="rounded-2xl border border-violet-100 bg-white p-5 shadow-sm space-y-2">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-[#6c40d9] bg-violet-50 px-2.5 py-0.5 rounded-full">
               Location 2
             </span>
             <h3 className="font-bold text-slate-900 text-sm">Okeise Street Branch</h3>
@@ -54,9 +55,9 @@ export default function ContactUsPage() {
           </div>
 
           {/* Operating Hours */}
-          <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm space-y-2">
+          <div className="rounded-2xl border border-violet-100 bg-white p-5 shadow-sm space-y-2">
             <div className="flex items-center gap-2 text-slate-900 font-bold text-sm">
-              <Clock className="h-4 w-4 text-emerald-600" />
+              <Clock className="h-4 w-4 text-[#e67e51]" />
               <span>Opening Hours</span>
             </div>
             <div className="text-xs sm:text-sm text-slate-600 space-y-1">
@@ -79,7 +80,7 @@ export default function ContactUsPage() {
         {/* Contact Numbers & Channels */}
         <div className="space-y-4">
           <h2 className="text-lg font-black text-slate-950 flex items-center gap-2">
-            <Phone className="h-5 w-5 text-emerald-600" />
+            <Phone className="h-5 w-5 text-[#6c40d9]" />
             <span>Direct Channels</span>
           </h2>
 
@@ -109,42 +110,42 @@ export default function ContactUsPage() {
           </div>
 
           {/* Direct Phone Lines */}
-          <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm space-y-3">
+          <div className="rounded-2xl border border-violet-100 bg-white p-5 shadow-sm space-y-3">
             <h3 className="font-bold text-slate-900 text-sm">Customer Support Lines</h3>
             <div className="space-y-2 text-xs sm:text-sm font-semibold">
               <a
                 href="tel:+2348161241045"
-                className="flex items-center gap-2.5 text-slate-700 hover:text-emerald-700 transition"
+                className="flex items-center gap-2.5 text-slate-700 hover:text-[#6c40d9] transition"
               >
-                <Phone className="h-4 w-4 text-emerald-600" />
+                <Phone className="h-4 w-4 text-[#6c40d9]" />
                 <span>+234 816 124 1045</span>
               </a>
               <a
                 href="tel:+2347079828222"
-                className="flex items-center gap-2.5 text-slate-700 hover:text-emerald-700 transition"
+                className="flex items-center gap-2.5 text-slate-700 hover:text-[#6c40d9] transition"
               >
-                <Phone className="h-4 w-4 text-emerald-600" />
+                <Phone className="h-4 w-4 text-[#6c40d9]" />
                 <span>+234 707 982 8222</span>
               </a>
             </div>
           </div>
 
           {/* Official Email */}
-          <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm space-y-3">
+          <div className="rounded-2xl border border-violet-100 bg-white p-5 shadow-sm space-y-3">
             <h3 className="font-bold text-slate-900 text-sm">Email Inquiries</h3>
             <div className="space-y-2 text-xs sm:text-sm font-semibold">
               <a
                 href="mailto:info@hapsegstore.com"
-                className="flex items-center gap-2.5 text-slate-700 hover:text-emerald-700 transition"
+                className="flex items-center gap-2.5 text-slate-700 hover:text-[#6c40d9] transition"
               >
-                <Mail className="h-4 w-4 text-emerald-600" />
+                <Mail className="h-4 w-4 text-[#6c40d9]" />
                 <span>info@hapsegstore.com</span>
               </a>
               <a
                 href="mailto:hapsegie@gmail.com"
-                className="flex items-center gap-2.5 text-slate-700 hover:text-emerald-700 transition"
+                className="flex items-center gap-2.5 text-slate-700 hover:text-[#6c40d9] transition"
               >
-                <Mail className="h-4 w-4 text-emerald-600" />
+                <Mail className="h-4 w-4 text-[#6c40d9]" />
                 <span>hapsegie@gmail.com</span>
               </a>
             </div>

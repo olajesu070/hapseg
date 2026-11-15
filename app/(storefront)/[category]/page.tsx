@@ -81,18 +81,21 @@ export default async function CategoryPage({ params, searchParams }: CategoryPag
   return (
     <div className="space-y-6">
       {/* Category Header Hero Banner */}
-      <div className="relative overflow-hidden rounded-3xl bg-slate-950 p-6 sm:p-8 text-white shadow-lg">
+      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#35186b] via-[#4d239c] to-[#6c40d9] p-6 sm:p-8 text-white shadow-xl shadow-purple-950/10">
         <div className="relative z-10 max-w-xl">
-          <span className="inline-block rounded-full bg-slate-800 text-slate-300 px-3 py-1 text-xs font-semibold uppercase tracking-wider mb-3">
+          <span className="inline-block rounded-full bg-white/10 backdrop-blur-md text-[#fda173] border border-white/15 px-3 py-1 text-xs font-bold uppercase tracking-wider mb-3">
             Collection
           </span>
           <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-white">
             {meta.title}
           </h1>
-          <p className="mt-1.5 text-xs sm:text-sm text-slate-400 leading-relaxed">
+          <p className="mt-1.5 text-xs sm:text-sm text-purple-100/90 leading-relaxed">
             {meta.subtitle}
           </p>
         </div>
+        {/* Subtle decorative circles */}
+        <div className="absolute -right-8 -bottom-10 h-44 w-44 rounded-full bg-white/5 blur-2xl pointer-events-none" />
+        <div className="absolute right-16 -top-12 h-36 w-36 rounded-full bg-[#fda173]/10 blur-xl pointer-events-none" />
       </div>
 
       {/* Real-Time Search Bar & Page Size Selector Bar */}

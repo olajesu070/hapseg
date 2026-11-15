@@ -76,7 +76,7 @@ export function NavigationDrawer() {
       <button
         onClick={() => setIsOpen(true)}
         aria-label="Open Collections Menu"
-        className="flex min-h-[44px] items-center gap-2 rounded-full border border-slate-200/90 bg-slate-50 px-3.5 py-1.5 text-xs font-bold text-slate-800 transition hover:bg-slate-100 hover:border-slate-300 active:scale-95"
+        className="flex min-h-[44px] items-center gap-2 rounded-full border border-violet-100 bg-violet-50/50 px-3.5 py-1.5 text-xs font-bold text-slate-800 transition hover:bg-violet-100/70 hover:border-violet-200 hover:text-[#6c40d9] active:scale-95"
       >
         <Menu className="h-4 w-4" />
         <span className="hidden sm:inline">Collections</span>
@@ -124,7 +124,7 @@ export function NavigationDrawer() {
               <span className="text-[11px] font-extrabold uppercase tracking-wider text-slate-400">
                 Browse Collections
               </span>
-              <span className="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full">
+              <span className="text-[10px] font-bold text-[#6c40d9] bg-violet-50 border border-violet-100 px-2 py-0.5 rounded-full">
                 Live Inventory
               </span>
             </div>
@@ -140,8 +140,8 @@ export function NavigationDrawer() {
                     href={item.href}
                     className={`group flex items-center justify-between rounded-2xl border p-3.5 transition-all active:scale-[0.98] ${
                       isActive
-                        ? "border-slate-950 bg-slate-950 text-white shadow-sm"
-                        : "border-slate-200/80 bg-white text-slate-900 hover:border-slate-300 hover:bg-slate-50/80"
+                        ? "border-[#6c40d9] bg-[#6c40d9] text-white shadow-md shadow-purple-500/15"
+                        : "border-slate-200/80 bg-white text-slate-900 hover:border-violet-200 hover:bg-violet-50/30"
                     }`}
                   >
                     <div className="flex items-center gap-3">
@@ -188,11 +188,11 @@ export function NavigationDrawer() {
                     href={page.href}
                     className={`flex min-h-[44px] items-center gap-3 rounded-xl px-3 py-2 text-xs font-bold transition ${
                       isActive
-                        ? "bg-slate-100 text-slate-950"
-                        : "text-slate-600 hover:bg-slate-50 hover:text-slate-950"
+                        ? "bg-violet-50 text-[#6c40d9]"
+                        : "text-slate-600 hover:bg-slate-50 hover:text-[#6c40d9]"
                     }`}
                   >
-                    <Icon className="h-4 w-4 text-slate-400" />
+                    <Icon className={`h-4 w-4 ${isActive ? "text-[#6c40d9]" : "text-slate-400"}`} />
                     <span>{page.name}</span>
                   </Link>
                 );
@@ -201,9 +201,9 @@ export function NavigationDrawer() {
           </div>
 
           {/* Section: Branch Locations Snippet */}
-          <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4 space-y-2">
+          <div className="rounded-2xl border border-violet-100 bg-violet-50/40 p-4 space-y-2">
             <div className="flex items-center gap-2 text-xs font-bold text-slate-900">
-              <MapPin className="h-4 w-4 text-emerald-600" />
+              <MapPin className="h-4 w-4 text-[#6c40d9]" />
               <span>Ado Ekiti Branches</span>
             </div>
             <p className="text-[11px] text-slate-500 leading-relaxed">
@@ -211,7 +211,7 @@ export function NavigationDrawer() {
             </p>
             <Link
               href="/contact-us"
-              className="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-700 hover:underline pt-1"
+              className="inline-flex items-center gap-1 text-[11px] font-bold text-[#6c40d9] hover:underline pt-1"
             >
               <span>View full store hours & directions</span>
               <ExternalLink className="h-3 w-3" />

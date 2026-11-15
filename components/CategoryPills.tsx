@@ -26,11 +26,11 @@ export function CategoryPills() {
             prefetch={true}
             className={`inline-flex shrink-0 items-center gap-1.5 rounded-full px-3.5 py-1.5 text-xs font-bold transition-all active:scale-95 ${
               isActive
-                ? "bg-slate-950 text-white shadow-sm"
+                ? "bg-[#6c40d9] text-white shadow-sm shadow-purple-500/25"
                 : "bg-slate-100 text-slate-600 hover:bg-slate-200/80"
             }`}
           >
-            <Icon className={`h-3.5 w-3.5 ${isActive ? "text-emerald-400" : "text-slate-500"}`} />
+            <Icon className={`h-3.5 w-3.5 ${isActive ? "text-[#fda173]" : "text-slate-500"}`} />
             <span>{cat.label}</span>
           </Link>
         );

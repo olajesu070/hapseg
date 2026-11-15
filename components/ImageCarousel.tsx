@@ -99,7 +99,7 @@ export function ImageCarousel({ images, productName }: ImageCarouselProps) {
         {/* Counter Badge */}
         {images.length > 1 && (
           <div className="absolute top-4 right-4 flex items-center gap-1 rounded-full bg-black/60 backdrop-blur-md px-3 py-1 text-xs font-semibold text-white">
-            <Layers className="h-3.5 w-3.5 text-emerald-400" />
+            <Layers className="h-3.5 w-3.5 text-[#fda173]" />
             <span>
               {activeIndex + 1} / {images.length}
             </span>
@@ -132,7 +132,7 @@ export function ImageCarousel({ images, productName }: ImageCarouselProps) {
               onClick={() => setActiveIndex(idx)}
               className={`relative h-16 w-16 flex-shrink-0 overflow-hidden rounded-xl border-2 transition-all ${
                 idx === activeIndex
-                  ? "border-emerald-600 scale-95 shadow-sm"
+                  ? "border-[#6c40d9] scale-95 shadow-md shadow-purple-500/20"
                   : "border-transparent opacity-60 hover:opacity-100"
               }`}
             >

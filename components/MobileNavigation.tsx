@@ -30,16 +30,16 @@ export function MobileNavigation() {
               prefetch={true}
               className={`relative flex min-h-[48px] min-w-[64px] flex-col items-center justify-center gap-1 rounded-2xl py-1 text-[11px] font-bold transition-all active:scale-95 ${
                 isActive
-                  ? "text-slate-950"
+                  ? "text-[#6c40d9]"
                   : "text-slate-400 hover:text-slate-700"
               }`}
             >
               {isActive && (
-                <span className="absolute top-1 h-1 w-6 rounded-full bg-slate-950" />
+                <span className="absolute top-1 h-1 w-6 rounded-full bg-[#6c40d9]" />
               )}
               <div
                 className={`flex h-7 w-7 items-center justify-center rounded-xl transition-colors ${
-                  isActive ? "bg-slate-100 text-slate-950" : "text-slate-400"
+                  isActive ? "bg-violet-100/80 text-[#6c40d9]" : "text-slate-400"
                 }`}
               >
                 <Icon className="h-4 w-4" />

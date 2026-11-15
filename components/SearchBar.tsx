@@ -42,7 +42,7 @@ export function SearchBar() {
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Search products, shoes, kitchen..."
-          className="w-full min-h-[44px] rounded-full bg-slate-100/90 pl-10 pr-9 text-xs sm:text-sm font-medium text-slate-900 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 border border-slate-200/80 transition-all shadow-inner"
+          className="w-full min-h-[44px] rounded-full bg-slate-100/90 pl-10 pr-9 text-xs sm:text-sm font-medium text-slate-900 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-[#6c40d9] border border-slate-200/80 transition-all shadow-inner"
         />
         {query && (
           <button

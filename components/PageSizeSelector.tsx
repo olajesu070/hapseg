@@ -40,8 +40,8 @@ export function PageSizeSelector({ currentLimit }: PageSizeSelectorProps) {
               disabled={isPending}
               className={`min-h-[28px] min-w-[32px] px-2 py-0.5 rounded-lg text-xs font-bold transition-all ${
                 isSelected
-                  ? "bg-white text-slate-900 shadow-sm"
-                  : "text-slate-500 hover:text-slate-900"
+                  ? "bg-white text-[#6c40d9] shadow-sm font-extrabold"
+                  : "text-slate-500 hover:text-[#6c40d9]"
               }`}
             >
               {size}

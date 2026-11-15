@@ -133,8 +133,8 @@ export default async function ProductDetailPage({ params, searchParams }: Produc
                 {product.category}
               </span>
               {product.itemNo && (
-                <span className="flex items-center gap-1 text-xs font-medium text-slate-500 bg-slate-50 px-2.5 py-1 rounded-full border border-slate-200/50">
-                  <Tag className="h-3 w-3 text-emerald-600" />
+                <span className="flex items-center gap-1 text-xs font-semibold text-slate-700 bg-violet-50 px-2.5 py-1 rounded-full border border-violet-100">
+                  <Tag className="h-3 w-3 text-[#e67e51]" />
                   Item #{product.itemNo}
                 </span>
               )}
@@ -148,7 +148,7 @@ export default async function ProductDetailPage({ params, searchParams }: Produc
               <span className="block text-xs font-medium text-slate-400 uppercase tracking-wider">
                 Price
               </span>
-              <p className="text-3xl font-black text-emerald-700">
+              <p className="text-3xl font-black text-[#6c40d9]">
                 {product.price !== null ? `₦${Math.round(product.price).toLocaleString()}` : "Price upon request"}
               </p>
             </div>
@@ -166,15 +166,15 @@ export default async function ProductDetailPage({ params, searchParams }: Produc
 
           {/* Trust Value Props */}
           <div className="grid grid-cols-2 gap-3 border-t border-slate-100 pt-5">
-            <div className="flex items-center gap-2.5 rounded-2xl bg-slate-50 p-3 border border-slate-100">
-              <ShieldCheck className="h-5 w-5 text-emerald-600 shrink-0" />
+            <div className="flex items-center gap-2.5 rounded-2xl bg-violet-50/50 p-3 border border-violet-100">
+              <ShieldCheck className="h-5 w-5 text-[#6c40d9] shrink-0" />
               <div className="text-left">
                 <p className="text-[11px] font-bold text-slate-800 leading-tight">100% Verified</p>
                 <p className="text-[10px] text-slate-500">Authentic product</p>
               </div>
             </div>
-            <div className="flex items-center gap-2.5 rounded-2xl bg-slate-50 p-3 border border-slate-100">
-              <Truck className="h-5 w-5 text-emerald-600 shrink-0" />
+            <div className="flex items-center gap-2.5 rounded-2xl bg-amber-50/50 p-3 border border-amber-100">
+              <Truck className="h-5 w-5 text-[#e67e51] shrink-0" />
               <div className="text-left">
                 <p className="text-[11px] font-bold text-slate-800 leading-tight">Fast Dispatch</p>
                 <p className="text-[10px] text-slate-500">Order via chat</p>
