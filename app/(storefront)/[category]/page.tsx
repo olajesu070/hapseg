@@ -3,27 +3,33 @@ import { prisma } from "@/lib/prisma";
 import { ProductCard } from "@/components/ProductCard";
 import { SearchBar } from "@/components/SearchBar";
 import { Pagination } from "@/components/Pagination";
+import { PageSizeSelector } from "@/components/PageSizeSelector";
 import { ShoppingBag, SearchX } from "lucide-react";
 import { Suspense } from "react";
 
 interface CategoryPageProps {
   params: Promise<{ category: string }>;
-  searchParams: Promise<{ q?: string; page?: string }>;
+  searchParams: Promise<{ q?: string; page?: string; limit?: string }>;
 }
 
 const VALID_CATEGORIES = ["fashion", "kitchen", "varieties"];
-const ITEMS_PER_PAGE = 8; // Clean page size for mobile browsing
+const ALLOWED_LIMITS = [10, 20, 50, 100];
+const DEFAULT_LIMIT = 10;
 
 export const dynamic = "force-dynamic";
 
 export default async function CategoryPage({ params, searchParams }: CategoryPageProps) {
   const { category: rawCategory } = await params;
-  const { q, page } = await searchParams;
+  const { q, page, limit } = await searchParams;
   const category = rawCategory.toLowerCase();
 
   if (!VALID_CATEGORIES.includes(category)) {
     notFound();
   }
+
+  // Parse page size (10, 20, 50, 100) with fallback
+  const parsedLimit = parseInt(limit || `${DEFAULT_LIMIT}`, 10);
+  const itemsPerPage = ALLOWED_LIMITS.includes(parsedLimit) ? parsedLimit : DEFAULT_LIMIT;
 
   // Sanitize search query and page number
   const searchQuery = q ? q.trim().slice(0, 50) : "";
@@ -45,12 +51,12 @@ export default async function CategoryPage({ params, searchParams }: CategoryPag
     prisma.product.findMany({
       where: whereClause,
       orderBy: { createdAt: "desc" },
-      skip: (currentPage - 1) * ITEMS_PER_PAGE,
-      take: ITEMS_PER_PAGE,
+      skip: (currentPage - 1) * itemsPerPage,
+      take: itemsPerPage,
     }),
   ]);
 
-  const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
+  const totalPages = Math.ceil(totalItems / itemsPerPage);
 
   const categoryMeta: Record<string, { title: string; subtitle: string }> = {
     fashion: {
@@ -93,15 +99,22 @@ export default async function CategoryPage({ params, searchParams }: CategoryPag
         <div className="absolute -right-8 -bottom-8 h-40 w-40 rounded-full bg-emerald-500/10 blur-2xl pointer-events-none" />
       </div>
 
-      {/* Real-Time Search Bar */}
+      {/* Real-Time Search Bar & Page Size Selector Bar */}
       <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 pt-1">
         <Suspense fallback={<div className="h-11 w-full max-w-md rounded-full bg-slate-100 animate-pulse" />}>
           <SearchBar />
         </Suspense>
 
-        <span className="text-xs font-semibold text-slate-500 self-end sm:self-center">
-          {totalItems} {totalItems === 1 ? "item" : "items"} found
-        </span>
+        <div className="flex items-center justify-between sm:justify-end gap-3 self-stretch sm:self-auto">
+          {/* Display Per-Page Selector (10, 20, 50, 100) */}
+          <Suspense fallback={null}>
+            <PageSizeSelector currentLimit={itemsPerPage} />
+          </Suspense>
+
+          <span className="text-xs font-semibold text-slate-500 whitespace-nowrap">
+            {totalItems} {totalItems === 1 ? "item" : "items"}
+          </span>
+        </div>
       </div>
 
       {/* Product Grid Area */}
@@ -128,12 +141,13 @@ export default async function CategoryPage({ params, searchParams }: CategoryPag
             ))}
           </div>
 
-          {/* Previous / Next Pagination Controls */}
+          {/* Previous / Next Pagination Controls with Limit preservation */}
           <Pagination
             currentPage={currentPage}
             totalPages={totalPages}
             category={category}
             searchQuery={searchQuery}
+            limit={itemsPerPage}
           />
         </div>
       )}

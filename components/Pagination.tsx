@@ -6,14 +6,16 @@ interface PaginationProps {
   totalPages: number;
   category: string;
   searchQuery?: string;
+  limit?: number;
 }
 
-export function Pagination({ currentPage, totalPages, category, searchQuery }: PaginationProps) {
+export function Pagination({ currentPage, totalPages, category, searchQuery, limit }: PaginationProps) {
   if (totalPages <= 1) return null;
 
   const buildPageUrl = (page: number) => {
     const params = new URLSearchParams();
     if (searchQuery) params.set("q", searchQuery);
+    if (limit && limit !== 10) params.set("limit", limit.toString());
     if (page > 1) params.set("page", page.toString());
     const queryString = params.toString();
     return `/${category}${queryString ? `?${queryString}` : ""}`;
@@ -51,9 +53,9 @@ export function Pagination({ currentPage, totalPages, category, searchQuery }: P
           </button>
         )}
 
-        {/* Page pills for quick tapping */}
+        {/* Page pills for quick jumping on desktop */}
         <div className="hidden sm:flex items-center gap-1">
-          {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => {
+          {Array.from({ length: Math.min(totalPages, 5) }, (_, i) => i + 1).map((p) => {
             const isCurrent = p === currentPage;
             return (
               <Link
