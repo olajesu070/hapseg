@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { MobileNavigation } from "@/components/MobileNavigation";
 import { CategoryPills } from "@/components/CategoryPills";
+import { NavigationDrawer } from "@/components/NavigationDrawer";
 import { MessageCircle, ShieldCheck } from "lucide-react";
 import "./globals.css";
 
@@ -55,39 +56,55 @@ export default function RootLayout({
               </div>
             </Link>
 
-            {/* Desktop Navigation Links (Shops, About Us, Contact Us) */}
+            {/* Desktop Navigation Links */}
             <nav className="hidden md:flex items-center gap-1 rounded-full bg-slate-100 p-1 border border-slate-200/70">
               <Link
                 href="/fashion"
                 className="rounded-full px-4 py-1.5 text-xs font-bold text-slate-600 transition hover:text-slate-900 hover:bg-white"
               >
-                Shops
+                Fashion
               </Link>
               <Link
-                href="/about-us"
+                href="/kitchen"
                 className="rounded-full px-4 py-1.5 text-xs font-bold text-slate-600 transition hover:text-slate-900 hover:bg-white"
               >
-                About Us
+                Kitchen
+              </Link>
+              <Link
+                href="/varieties"
+                className="rounded-full px-4 py-1.5 text-xs font-bold text-slate-600 transition hover:text-slate-900 hover:bg-white"
+              >
+                Varieties
+              </Link>
+              <span className="h-4 w-px bg-slate-300 mx-1" />
+              <Link
+                href="/about-us"
+                className="rounded-full px-3 py-1.5 text-xs font-bold text-slate-500 transition hover:text-slate-900"
+              >
+                About
               </Link>
               <Link
                 href="/contact-us"
-                className="rounded-full px-4 py-1.5 text-xs font-bold text-slate-600 transition hover:text-slate-900 hover:bg-white"
+                className="rounded-full px-3 py-1.5 text-xs font-bold text-slate-500 transition hover:text-slate-900"
               >
-                Contact Us
+                Contact
               </Link>
             </nav>
 
-            {/* Customer Assurance Badge / Quick WhatsApp Inquire */}
+            {/* Right Side: Collections Drawer Menu + WhatsApp Chat */}
             <div className="flex items-center gap-2">
               <a
                 href="https://wa.me/2347030797836?text=Hello%20Hapseg%20Store%2C%20I%20have%20an%20inquiry."
                 target="_blank"
                 rel="noopener noreferrer"
-                className="hidden sm:inline-flex items-center gap-1.5 text-xs font-bold text-emerald-800 bg-emerald-50 border border-emerald-200/80 rounded-full px-3.5 py-1.5 hover:bg-emerald-100 transition active:scale-95"
+                className="hidden lg:inline-flex items-center gap-1.5 text-xs font-bold text-emerald-800 bg-emerald-50 border border-emerald-200/80 rounded-full px-3.5 py-1.5 hover:bg-emerald-100 transition active:scale-95"
               >
                 <MessageCircle className="h-3.5 w-3.5 fill-current" />
-                <span>Chat with Us</span>
+                <span>Chat</span>
               </a>
+
+              {/* Collections & Info Slide-out Menu Button */}
+              <NavigationDrawer />
             </div>
           </div>
 
@@ -117,7 +134,9 @@ export default function RootLayout({
               <p>© {new Date().getFullYear()} Hapseg Varieties Store. All rights reserved.</p>
             </div>
             <div className="flex items-center gap-5 text-slate-600 font-medium">
-              <Link href="/shop" className="hover:text-slate-950 transition">Shops</Link>
+              <Link href="/fashion" className="hover:text-slate-950 transition">Fashion</Link>
+              <Link href="/kitchen" className="hover:text-slate-950 transition">Kitchen</Link>
+              <Link href="/varieties" className="hover:text-slate-950 transition">Varieties</Link>
               <Link href="/about-us" className="hover:text-slate-950 transition">About Us</Link>
               <Link href="/contact-us" className="hover:text-slate-950 transition">Contact Us</Link>
               <span className="flex items-center gap-1.5 ml-2 text-emerald-700 font-semibold"><ShieldCheck className="h-4 w-4" /> Guaranteed Quality</span>
