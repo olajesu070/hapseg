@@ -36,8 +36,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${fontSans.variable} font-sans h-full bg-[#fbfbfe] antialiased`}>
-      <body className="min-h-screen flex flex-col text-slate-900 pb-20 md:pb-10 selection:bg-[#6c40d9] selection:text-white">
+    <html lang="en" className={`${fontSans.variable} font-sans h-full bg-[#fbfbfe] antialiased overflow-x-hidden`}>
+      <body className="min-h-screen flex flex-col text-slate-900 pb-20 md:pb-10 selection:bg-[#6c40d9] selection:text-white overflow-x-hidden">
         
         {/* Top Header Bar */}
         <header className="sticky top-0 z-30 border-b border-indigo-100/70 bg-white/95 backdrop-blur-md shadow-sm">
