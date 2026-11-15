@@ -55,34 +55,39 @@ export default function RootLayout({
               </div>
             </Link>
 
-            {/* Desktop Navigation Links */}
+            {/* Desktop Navigation Links (Shops, About Us, Contact Us) */}
             <nav className="hidden md:flex items-center gap-1 rounded-full bg-slate-100 p-1 border border-slate-200/70">
               <Link
                 href="/fashion"
                 className="rounded-full px-4 py-1.5 text-xs font-bold text-slate-600 transition hover:text-slate-900 hover:bg-white"
               >
-                Fashion
+                Shops
               </Link>
               <Link
-                href="/kitchen"
+                href="/about-us"
                 className="rounded-full px-4 py-1.5 text-xs font-bold text-slate-600 transition hover:text-slate-900 hover:bg-white"
               >
-                Kitchen
+                About Us
               </Link>
               <Link
-                href="/varieties"
+                href="/contact-us"
                 className="rounded-full px-4 py-1.5 text-xs font-bold text-slate-600 transition hover:text-slate-900 hover:bg-white"
               >
-                Varieties
+                Contact Us
               </Link>
             </nav>
 
-            {/* Customer Assurance Badge */}
-            <div className="flex items-center gap-2 text-xs font-semibold text-slate-700 bg-slate-100 border border-slate-200/80 rounded-full px-3 py-1">
-              <span className="relative flex h-2 w-2">
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-              </span>
-              <span>Available Now</span>
+            {/* Customer Assurance Badge / Quick WhatsApp Inquire */}
+            <div className="flex items-center gap-2">
+              <a
+                href="https://wa.me/2347030797836?text=Hello%20Hapseg%20Store%2C%20I%20have%20an%20inquiry."
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hidden sm:inline-flex items-center gap-1.5 text-xs font-bold text-emerald-800 bg-emerald-50 border border-emerald-200/80 rounded-full px-3.5 py-1.5 hover:bg-emerald-100 transition active:scale-95"
+              >
+                <MessageCircle className="h-3.5 w-3.5 fill-current" />
+                <span>Chat with Us</span>
+              </a>
             </div>
           </div>
 
@@ -100,7 +105,7 @@ export default function RootLayout({
         {/* Footer */}
         <footer className="hidden md:block border-t border-slate-200/70 bg-white py-8 mt-12 text-center text-xs text-slate-500">
           <div className="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-3">
               <div className="relative h-7 w-24">
                 <Image
                   src="/logo.png"
@@ -112,8 +117,10 @@ export default function RootLayout({
               <p>© {new Date().getFullYear()} Hapseg Varieties Store. All rights reserved.</p>
             </div>
             <div className="flex items-center gap-5 text-slate-600 font-medium">
-              <span className="flex items-center gap-1.5"><ShieldCheck className="h-4 w-4 text-emerald-600" /> Guaranteed Quality</span>
-              <span className="flex items-center gap-1.5"><MessageCircle className="h-4 w-4 text-emerald-600" /> Direct WhatsApp Inquiries</span>
+              <Link href="/shop" className="hover:text-slate-950 transition">Shops</Link>
+              <Link href="/about-us" className="hover:text-slate-950 transition">About Us</Link>
+              <Link href="/contact-us" className="hover:text-slate-950 transition">Contact Us</Link>
+              <span className="flex items-center gap-1.5 ml-2 text-emerald-700 font-semibold"><ShieldCheck className="h-4 w-4" /> Guaranteed Quality</span>
             </div>
           </div>
         </footer>

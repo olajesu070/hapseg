@@ -2,12 +2,12 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Shirt, UtensilsCrossed, Grid } from "lucide-react";
+import { ShoppingBag, Info, PhoneCall } from "lucide-react";
 
 const NAV_ITEMS = [
-  { label: "Fashion", href: "/fashion", icon: Shirt },
-  { label: "Kitchen", href: "/kitchen", icon: UtensilsCrossed },
-  { label: "Varieties", href: "/varieties", icon: Grid },
+  { label: "Shops", href: "/fashion", icon: ShoppingBag },
+  { label: "About Us", href: "/about-us", icon: Info },
+  { label: "Contact Us", href: "/contact-us", icon: PhoneCall },
 ];
 
 export function MobileNavigation() {
@@ -18,7 +18,10 @@ export function MobileNavigation() {
       <div className="flex items-center justify-around">
         {NAV_ITEMS.map((item) => {
           const Icon = item.icon;
-          const isActive = pathname.startsWith(item.href);
+          const isActive =
+            item.href === "/fashion"
+              ? pathname.startsWith("/fashion") || pathname.startsWith("/kitchen") || pathname.startsWith("/varieties") || pathname.startsWith("/shop")
+              : pathname.startsWith(item.href);
 
           return (
             <Link
