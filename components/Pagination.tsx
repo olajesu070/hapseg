@@ -24,6 +24,19 @@ export function Pagination({ currentPage, totalPages, category, searchQuery, lim
   const hasPrev = currentPage > 1;
   const hasNext = currentPage < totalPages;
 
+  // Calculate dynamic 5-page window centered on current page
+  const maxButtons = 5;
+  let startPage = Math.max(1, currentPage - Math.floor(maxButtons / 2));
+  let endPage = startPage + maxButtons - 1;
+  if (endPage > totalPages) {
+    endPage = totalPages;
+    startPage = Math.max(1, endPage - maxButtons + 1);
+  }
+  const pageNumbers: number[] = [];
+  for (let p = startPage; p <= endPage; p++) {
+    pageNumbers.push(p);
+  }
+
   return (
     <div className="mt-8 flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-slate-200/80 pt-6">
       {/* Page status label */}
@@ -55,7 +68,7 @@ export function Pagination({ currentPage, totalPages, category, searchQuery, lim
 
         {/* Page pills for quick jumping on desktop */}
         <div className="hidden sm:flex items-center gap-1">
-          {Array.from({ length: Math.min(totalPages, 5) }, (_, i) => i + 1).map((p) => {
+          {pageNumbers.map((p) => {
             const isCurrent = p === currentPage;
             return (
               <Link

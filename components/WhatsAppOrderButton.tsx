@@ -15,7 +15,11 @@ export function WhatsAppOrderButton({
 }: WhatsAppOrderButtonProps) {
   // Edge case fix: strictly sanitize phone number, fallback if too short
   const rawDigits = (phoneNumber || "").replace(/[^0-9]/g, "");
-  const fallbackPhone = (process.env.DEFAULT_FALLBACK_PHONE || "2347030797836").replace(/[^0-9]/g, "");
+  const fallbackPhone = (
+    process.env.NEXT_PUBLIC_DEFAULT_FALLBACK_PHONE ||
+    process.env.DEFAULT_FALLBACK_PHONE ||
+    "2347030797836"
+  ).replace(/[^0-9]/g, "");
   const cleanPhone = rawDigits.length >= 10 ? rawDigits : fallbackPhone;
 
   // Sanitize title to prevent URL encoding corruption

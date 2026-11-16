@@ -19,6 +19,7 @@ export function SearchBar() {
     } else {
       params.delete("q");
     }
+    params.delete("page"); // Reset back to page 1 on search
     startTransition(() => {
       router.push(`${pathname}?${params.toString()}`);
     });
@@ -28,6 +29,7 @@ export function SearchBar() {
     setQuery("");
     const params = new URLSearchParams(searchParams);
     params.delete("q");
+    params.delete("page"); // Reset back to page 1 on clear
     startTransition(() => {
       router.push(`${pathname}?${params.toString()}`);
     });

@@ -1,9 +1,12 @@
+import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { ImageCarousel } from "@/components/ImageCarousel";
 import { WhatsAppOrderButton } from "@/components/WhatsAppOrderButton";
+import { ShareProductButton } from "@/components/ShareProductButton";
 import { Tag, ArrowLeft, ShieldCheck, Truck, ChevronLeft, ChevronRight } from "lucide-react";
+import { formatProductImageUrl } from "@/lib/image";
 
 interface ProductDetailPageProps {
   params: Promise<{
@@ -16,6 +19,50 @@ interface ProductDetailPageProps {
 }
 
 export const dynamic = "force-dynamic";
+
+export async function generateMetadata({ params }: ProductDetailPageProps): Promise<Metadata> {
+  const { id, category } = await params;
+  const product = await prisma.product.findUnique({
+    where: { id },
+  });
+
+  if (!product) {
+    return {
+      title: "Product Not Found — Hapseg Varieties Store",
+    };
+  }
+
+  const primaryImage = formatProductImageUrl(product.images[0]) || "https://hapseg.vercel.app/logo.png";
+  const formattedPrice = product.price !== null ? `₦${Math.round(product.price).toLocaleString()}` : "Price upon request";
+  const ogTitle = `${product.name} (${formattedPrice}) | Hapseg Varieties Store`;
+  const ogDesc = `${product.name} available now for ${formattedPrice} at Hapseg Varieties Store, Ado Ekiti. Order directly via WhatsApp with fast nationwide delivery.`;
+
+  return {
+    title: `${product.name} — Hapseg Varieties Store`,
+    description: ogDesc,
+    openGraph: {
+      title: ogTitle,
+      description: ogDesc,
+      url: `https://hapseg.vercel.app/${category}/${id}`,
+      siteName: "Hapseg Varieties Store",
+      images: [
+        {
+          url: primaryImage,
+          width: 800,
+          height: 800,
+          alt: product.name,
+        },
+      ],
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: ogTitle,
+      description: ogDesc,
+      images: [primaryImage],
+    },
+  };
+}
 
 export default async function ProductDetailPage({ params, searchParams }: ProductDetailPageProps) {
   const { category, id } = await params;
@@ -41,25 +88,41 @@ export default async function ProductDetailPage({ params, searchParams }: Produc
     ];
   }
 
-  // 3. Fetch all sibling product IDs in the current search/category scope to calculate Previous / Next
-  const scopedProducts = await prisma.product.findMany({
-    where: whereClause,
-    orderBy: { createdAt: "desc" },
-    select: { id: true, name: true },
-  });
+  // 3. Perform targeted, indexed queries for Prev and Next items (prevents O(N) full-table scans)
+  const [prevProduct, nextProduct, totalInScope, newerCount] = await Promise.all([
+    prisma.product.findFirst({
+      where: {
+        ...whereClause,
+        createdAt: { gt: product.createdAt },
+      },
+      orderBy: { createdAt: "asc" },
+      select: { id: true, name: true },
+    }),
+    prisma.product.findFirst({
+      where: {
+        ...whereClause,
+        createdAt: { lt: product.createdAt },
+      },
+      orderBy: { createdAt: "desc" },
+      select: { id: true, name: true },
+    }),
+    prisma.product.count({ where: whereClause }),
+    prisma.product.count({
+      where: {
+        ...whereClause,
+        createdAt: { gt: product.createdAt },
+      },
+    }),
+  ]);
 
-  const currentIndex = scopedProducts.findIndex((p) => p.id === id);
-  const totalInScope = scopedProducts.length;
-
-  const prevProduct = currentIndex > 0 ? scopedProducts[currentIndex - 1] : null;
-  const nextProduct = currentIndex >= 0 && currentIndex < totalInScope - 1 ? scopedProducts[currentIndex + 1] : null;
+  const currentIndex = newerCount;
 
   // Build query string to preserve search term across next/prev navigation
   const querySuffix = searchQuery ? `?q=${encodeURIComponent(searchQuery)}` : "";
 
   return (
     <div className="relative pb-28 md:pb-8 max-w-4xl mx-auto space-y-4">
-      {/* Top Header: Back to Category/Search + Next/Previous Navigation Bar */}
+      {/* Top Header: Back to Category/Search + Next/Previous Navigation & Share Bar */}
       <div className="flex items-center justify-between border-b border-slate-200/80 pb-3 gap-2">
         <Link
           href={`/${category}${querySuffix}`}
@@ -71,8 +134,11 @@ export default async function ProductDetailPage({ params, searchParams }: Produc
           </span>
         </Link>
 
-        {/* Previous / Next Controls */}
-        <div className="flex items-center gap-2">
+        {/* Previous / Next Controls + Top Share Trigger */}
+        <div className="flex items-center gap-1.5 sm:gap-2">
+          {/* Share Button Pill */}
+          <ShareProductButton product={product} variant="pill" />
+
           {currentIndex >= 0 && (
             <span className="hidden sm:inline-block text-xs font-semibold text-slate-400 mr-1">
               {currentIndex + 1} of {totalInScope}
@@ -128,16 +194,18 @@ export default async function ProductDetailPage({ params, searchParams }: Produc
         {/* Right: Product Details & Sticky Actions */}
         <div className="flex flex-col space-y-6">
           <div className="space-y-3">
-            <div className="flex flex-wrap items-center gap-2">
-              <span className="rounded-full bg-slate-100 border border-slate-200/80 px-3 py-1 text-xs font-semibold capitalize text-slate-700">
-                {product.category}
-              </span>
-              {product.itemNo && (
-                <span className="flex items-center gap-1 text-xs font-semibold text-slate-700 bg-violet-50 px-2.5 py-1 rounded-full border border-violet-100">
-                  <Tag className="h-3 w-3 text-[#e67e51]" />
-                  Item #{product.itemNo}
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <div className="flex items-center gap-2">
+                <span className="rounded-full bg-slate-100 border border-slate-200/80 px-3 py-1 text-xs font-semibold capitalize text-slate-700">
+                  {product.category}
                 </span>
-              )}
+                {product.itemNo && (
+                  <span className="flex items-center gap-1 text-xs font-semibold text-slate-700 bg-violet-50 px-2.5 py-1 rounded-full border border-violet-100">
+                    <Tag className="h-3 w-3 text-[#e67e51]" />
+                    Item #{product.itemNo}
+                  </span>
+                )}
+              </div>
             </div>
 
             <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight leading-tight">
@@ -182,24 +250,25 @@ export default async function ProductDetailPage({ params, searchParams }: Produc
             </div>
           </div>
 
-          {/* Desktop WhatsApp CTA Button */}
-          <div className="hidden md:block pt-3">
+          {/* Desktop Actions: WhatsApp Order + Share Button */}
+          <div className="hidden md:flex flex-col gap-2.5 pt-3">
             <WhatsAppOrderButton
               phoneNumber={product.phoneNumber}
               productName={product.name}
               itemNo={product.itemNo}
             />
+            <ShareProductButton product={product} variant="primary" />
           </div>
         </div>
       </div>
 
-      {/* Bottom Sticky Bar for Mobile: Next/Prev Navigation + WhatsApp CTA */}
-      <div className="fixed bottom-0 left-0 right-0 z-50 md:hidden bg-white/95 backdrop-blur-md border-t border-slate-200 px-4 py-3 pb-[max(env(safe-area-inset-bottom),0.75rem)] shadow-[0_-10px_25px_rgba(0,0,0,0.08)]">
+      {/* Bottom Sticky Bar for Mobile: Next/Prev + WhatsApp CTA + Share Button */}
+      <div className="fixed bottom-0 left-0 right-0 z-50 md:hidden bg-white/95 backdrop-blur-md border-t border-slate-200 px-3 sm:px-4 py-3 pb-[max(env(safe-area-inset-bottom),0.75rem)] shadow-[0_-10px_25px_rgba(0,0,0,0.08)]">
         <div className="flex items-center gap-2">
           {prevProduct ? (
             <Link
               href={`/${category}/${prevProduct.id}${querySuffix}`}
-              className="flex min-h-[48px] min-w-[48px] items-center justify-center rounded-2xl border border-slate-200 bg-white text-slate-700 active:scale-95"
+              className="flex min-h-[48px] min-w-[44px] items-center justify-center rounded-2xl border border-slate-200 bg-white text-slate-700 active:scale-95"
               aria-label="Previous product"
             >
               <ChevronLeft className="h-5 w-5" />
@@ -207,12 +276,13 @@ export default async function ProductDetailPage({ params, searchParams }: Produc
           ) : (
             <button
               disabled
-              className="flex min-h-[48px] min-w-[48px] items-center justify-center rounded-2xl border border-slate-100 bg-slate-50 text-slate-300 cursor-not-allowed"
+              className="flex min-h-[48px] min-w-[44px] items-center justify-center rounded-2xl border border-slate-100 bg-slate-50 text-slate-300 cursor-not-allowed"
             >
               <ChevronLeft className="h-5 w-5" />
             </button>
           )}
 
+          {/* Primary WhatsApp Order Action */}
           <div className="flex-1">
             <WhatsAppOrderButton
               phoneNumber={product.phoneNumber}
@@ -221,10 +291,13 @@ export default async function ProductDetailPage({ params, searchParams }: Produc
             />
           </div>
 
+          {/* Mobile Direct Share Icon Button */}
+          <ShareProductButton product={product} variant="icon" />
+
           {nextProduct ? (
             <Link
               href={`/${category}/${nextProduct.id}${querySuffix}`}
-              className="flex min-h-[48px] min-w-[48px] items-center justify-center rounded-2xl border border-slate-200 bg-white text-slate-700 active:scale-95"
+              className="flex min-h-[48px] min-w-[44px] items-center justify-center rounded-2xl border border-slate-200 bg-white text-slate-700 active:scale-95"
               aria-label="Next product"
             >
               <ChevronRight className="h-5 w-5" />
@@ -232,7 +305,7 @@ export default async function ProductDetailPage({ params, searchParams }: Produc
           ) : (
             <button
               disabled
-              className="flex min-h-[48px] min-w-[48px] items-center justify-center rounded-2xl border border-slate-100 bg-slate-50 text-slate-300 cursor-not-allowed"
+              className="flex min-h-[48px] min-w-[44px] items-center justify-center rounded-2xl border border-slate-100 bg-slate-50 text-slate-300 cursor-not-allowed"
             >
               <ChevronRight className="h-5 w-5" />
             </button>

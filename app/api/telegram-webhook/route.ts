@@ -70,6 +70,11 @@ export async function POST(req: NextRequest) {
     const secretToken = req.headers.get("x-telegram-bot-api-secret-token");
     const expectedSecret = process.env.TELEGRAM_WEBHOOK_SECRET;
 
+    if (process.env.NODE_ENV === "production" && !expectedSecret) {
+      console.error("TELEGRAM_WEBHOOK_SECRET must be configured in production");
+      return NextResponse.json({ error: "Server configuration error" }, { status: 500 });
+    }
+
     if (expectedSecret && !verifyWebhookSecret(secretToken, expectedSecret)) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
@@ -125,6 +130,8 @@ export async function POST(req: NextRequest) {
 
     // 3. Case A: Telegram Media Album (shares media_group_id)
     if (mediaGroupId) {
+      const aiData = rawCaption ? await extractMetadata(rawCaption) : null;
+
       const existingProduct = await prisma.product.findUnique({
         where: { telegramGroupId: mediaGroupId },
       });
@@ -135,17 +142,14 @@ export async function POST(req: NextRequest) {
           ? existingProduct.images
           : [...existingProduct.images, imageUrl];
 
-        let updatedFields = {};
-        if (rawCaption && (!existingProduct.name || existingProduct.name === "New Item" || existingProduct.name === "New Arrival Item")) {
-          const aiData = await extractMetadata(rawCaption);
-          updatedFields = {
-            name: aiData.productName,
-            description: aiData.description,
-            price: aiData.price,
-            itemNo: aiData.itemNo,
-            phoneNumber: aiData.phoneNumber,
-            category: aiData.category,
-          };
+        const updatedFields: any = {};
+        if (aiData && (!existingProduct.name || existingProduct.name === "New Item" || existingProduct.name === "New Arrival Item")) {
+          updatedFields.name = aiData.productName;
+          updatedFields.description = aiData.description;
+          updatedFields.price = aiData.price;
+          updatedFields.itemNo = aiData.itemNo;
+          updatedFields.phoneNumber = aiData.phoneNumber;
+          updatedFields.category = aiData.category;
         }
 
         const product = await prisma.product.update({
@@ -159,27 +163,37 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ status: "album_updated", productId: product.id }, { status: 200 });
       }
 
-      // First photo in this album
-      const aiData = await extractMetadata(rawCaption);
+      // Upsert to handle race condition when concurrent photos arrive before first insert completes
+      const initialAiData = aiData || fallbackCaptionParser("");
+      const updateData: any = {
+        images: { push: imageUrl },
+      };
+
+      if (aiData) {
+        updateData.name = aiData.productName;
+        updateData.description = aiData.description;
+        updateData.price = aiData.price;
+        updateData.itemNo = aiData.itemNo;
+        updateData.phoneNumber = aiData.phoneNumber;
+        updateData.category = aiData.category;
+      }
 
       const product = await prisma.product.upsert({
         where: { telegramGroupId: mediaGroupId },
-        update: {
-          images: { push: imageUrl },
-        },
+        update: updateData,
         create: {
           telegramGroupId: mediaGroupId,
-          name: aiData.productName,
-          description: aiData.description,
-          price: aiData.price,
-          itemNo: aiData.itemNo,
-          phoneNumber: aiData.phoneNumber,
-          category: aiData.category,
+          name: initialAiData.productName,
+          description: initialAiData.description,
+          price: initialAiData.price,
+          itemNo: initialAiData.itemNo,
+          phoneNumber: initialAiData.phoneNumber,
+          category: initialAiData.category,
           images: [imageUrl],
         },
       });
 
-      return NextResponse.json({ status: "album_created", productId: product.id }, { status: 200 });
+      return NextResponse.json({ status: "album_processed", productId: product.id }, { status: 200 });
     }
 
     // 4. Case B: Single photo post

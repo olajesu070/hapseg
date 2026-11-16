@@ -17,15 +17,12 @@ export async function uploadTelegramPhotoToStorage(fileId: string): Promise<stri
     throw new Error(`Failed to resolve Telegram file path: ${fileData.description || "Unknown error"}`);
   }
 
-  const telegramFileUrl = `https://api.telegram.org/file/bot${botToken}/${fileData.result.file_path}`;
-
-  // 2. Optional: download and upload to Cloud Bucket (e.g. Supabase Storage / Cloudflare R2 / AWS S3)
-  // When NEXT_PUBLIC_CDN_BASE_URL is configured, images can be mapped to your dedicated CDN/bucket
+  // 2. Return secure proxy path or cloud CDN URL (never expose TELEGRAM_BOT_TOKEN)
   if (process.env.NEXT_PUBLIC_CDN_BASE_URL) {
     const uniqueKey = `products/${Date.now()}-${fileId}.jpg`;
     return `${process.env.NEXT_PUBLIC_CDN_BASE_URL}/${uniqueKey}`;
   }
 
-  // Telegram direct file link fallback
-  return telegramFileUrl;
+  // Use local secure proxy route to shield TELEGRAM_BOT_TOKEN from client exposure
+  return `/api/telegram-image?path=${encodeURIComponent(fileData.result.file_path)}`;
 }

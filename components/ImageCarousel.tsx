@@ -3,6 +3,7 @@
 import { useState, useRef } from "react";
 import Image from "next/image";
 import { ChevronLeft, ChevronRight, Layers } from "lucide-react";
+import { formatProductImageUrl } from "@/lib/image";
 
 interface ImageCarouselProps {
   images: string[];
@@ -65,7 +66,7 @@ export function ImageCarousel({ images, productName }: ImageCarouselProps) {
           {images.map((url, i) => (
             <div key={i} className="relative h-full w-full flex-shrink-0">
               <Image
-                src={url}
+                src={formatProductImageUrl(url)}
                 alt={`${productName} - photo ${i + 1}`}
                 fill
                 priority={i === 0}
@@ -136,7 +137,7 @@ export function ImageCarousel({ images, productName }: ImageCarouselProps) {
                   : "border-transparent opacity-60 hover:opacity-100"
               }`}
             >
-              <Image src={url} alt={`Thumb ${idx + 1}`} fill className="object-cover" />
+              <Image src={formatProductImageUrl(url)} alt={`Thumb ${idx + 1}`} fill className="object-cover" />
             </button>
           ))}
         </div>

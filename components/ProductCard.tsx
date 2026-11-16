@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Tag, ArrowRight } from "lucide-react";
+import { formatProductImageUrl } from "@/lib/image";
 
 interface ProductCardProps {
   product: {
@@ -15,7 +16,7 @@ interface ProductCardProps {
 }
 
 export function ProductCard({ product, searchQuery }: ProductCardProps) {
-  const primaryImage = product.images[0] || "https://placehold.co/600x600/f8fafc/94a3b8?text=HAPSEG";
+  const primaryImage = formatProductImageUrl(product.images[0]);
   const querySuffix = searchQuery ? `?q=${encodeURIComponent(searchQuery)}` : "";
 
   return (
